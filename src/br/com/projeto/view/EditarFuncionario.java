@@ -24,45 +24,15 @@ import javax.swing.JTextField;
  *
  * @author LucasVerly
  */
-public class CadastroFuncionario extends javax.swing.JFrame {
+public class EditarFuncionario extends javax.swing.JFrame {
 
-
+    /*public Funcionarios funcionarioAserPassado(Funcionarios funcionarioASerEditado) {
+        return funcionarioASerEditado;
+    }*/
+    
     /**
      * Creates new form Clientes
      */
-    
-    //Metodo para inserir os dados no banco de dados
-    public void insertFuncionario (){
-        
-        Funcionarios funcionario = new Funcionarios();
-        funcionario.setNome(txtNome.getText().trim());
-        funcionario.setBairro(txtBairro.getText().trim());
-        funcionario.setCargo(txtCargo.getText().trim());
-        funcionario.setCelular(txtCelular.getText().trim());
-        funcionario.setCep(txtCep.getText().trim());
-        funcionario.setCidade(txtCidade.getText().trim());
-        funcionario.setComplemento(txtComplemento.getText().trim());
-        funcionario.setCpf(txtCpf.getText().trim());
-        funcionario.setDataNascimento(txtDataNascimento.getText().trim());
-        funcionario.setEmail(txtEmail.getText().trim());
-        funcionario.setEndereco(txtRua.getText().trim());
-        funcionario.setEstado((String)cbEstado.getSelectedItem());
-        funcionario.setNivelAcesso((String)cbNivel.getSelectedItem());
-        funcionario.setNumero(txtNumeroCasa.getText());
-        funcionario.setRg(txtRG.getText().trim());
-        funcionario.setSenha(txtSenha.getText().trim());
-        funcionario.setTelefone(txtTelefoneFixo.getText().trim());
-        
-        try {
-            Connection conexao = new Conexao().getConnection();
-            FuncionarioDAO funcionarioDao = new FuncionarioDAO(conexao);
-            funcionarioDao.insertFuncionario(funcionario);
-            JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso !!!");
-        } catch (SQLException ex) {
-            Logger.getLogger(CadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar !!!" + ex);
-        }
-    }
     
     //Metodo para limpar a tela do Painel Inteiro
     public void limparTela(JPanel container) {
@@ -74,9 +44,42 @@ public class CadastroFuncionario extends javax.swing.JFrame {
         }
     }
     
+    //Metodo para alterar os dados do Funcionario
+    public void alterarDadosFuncionario() {
+        
+        Funcionarios funcionario = new Funcionarios();
+        funcionario.setId(Integer.parseInt(getTxtCodigo().getText()));
+        funcionario.setNome(getTxtNome().getText().trim());
+        funcionario.setBairro(getTxtBairro().getText().trim());
+        funcionario.setCargo(getTxtCargo().getText().trim());
+        funcionario.setCelular(getTxtCelular().getText().trim());
+        funcionario.setCep(getTxtCep().getText().trim());
+        funcionario.setCidade(getTxtCidade().getText().trim());
+        funcionario.setComplemento(getTxtComplemento().getText().trim());
+        funcionario.setCpf(getTxtCpf().getText().trim());
+        funcionario.setDataNascimento(getTxtDataNascimento().getText().trim());
+        funcionario.setEmail(getTxtEmail().getText().trim());
+        funcionario.setEndereco(getTxtRua().getText().trim());
+        funcionario.setEstado((String)getCbEstado().getSelectedItem());
+        funcionario.setNivelAcesso((String) getCbNivel().getSelectedItem());
+        funcionario.setNumero(getTxtNumeroCasa().getText().trim());
+        funcionario.setRg(getTxtRG().getText().trim());
+        funcionario.setSenha(getTxtSenha().getText().trim());
+        funcionario.setTelefone(getTxtTelefoneFixo().getText().trim());
+        
+        try {
+            Connection conexao = new Conexao().getConnection();
+            FuncionarioDAO funcionarioDao = new FuncionarioDAO(conexao);
+            funcionarioDao.updateFuncionario(funcionario);
+            JOptionPane.showMessageDialog(null, "Funcionário editado com sucesso !!!");
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Erro ao editar !!!" + ex);
+        }
+    }
     
     
-    public CadastroFuncionario() {
+    public EditarFuncionario() {
         initComponents();
     }
 
@@ -146,16 +149,16 @@ public class CadastroFuncionario extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Cadastro de Funcionários");
+        jLabel1.setText("Editar Funcionário");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(385, 385, 385)
+                .addGap(416, 416, 416)
                 .addComponent(jLabel1)
-                .addContainerGap(412, Short.MAX_VALUE))
+                .addContainerGap(464, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,6 +250,11 @@ public class CadastroFuncionario extends javax.swing.JFrame {
         jLabel19.setText("Nível de acesso :");
 
         cbNivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuário", "Administrador" }));
+        cbNivel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbNivelActionPerformed(evt);
+            }
+        });
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel20.setText("Data de Nascimento :");
@@ -442,8 +450,7 @@ public class CadastroFuncionario extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
-        insertFuncionario();
-        limparTela(painelDados);
+        alterarDadosFuncionario();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -457,6 +464,10 @@ public class CadastroFuncionario extends javax.swing.JFrame {
         // TODO add your handling code here:
         limparTela(painelDados);
     }//GEN-LAST:event_bntCancelarActionPerformed
+
+    private void cbNivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNivelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbNivelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -475,14 +486,18 @@ public class CadastroFuncionario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastroFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditarFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -491,13 +506,167 @@ public class CadastroFuncionario extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CadastroFuncionario().setVisible(true);
+                new EditarFuncionario().setVisible(true);
             }
         });
     }
+
+    public JComboBox<String> getCbEstado() {
+        return cbEstado;
+    }
+
+    public void setCbEstado(String cbEstado) {
+        if (cbEstado.equals("MG")){
+            this.cbEstado.setSelectedIndex(0);
+        } else if (cbEstado.equals("SP")){
+            this.cbEstado.setSelectedIndex(2);
+        } else {
+            this.cbEstado.setSelectedIndex(5);
+        }
+    }
+
+    public JComboBox<String> getCbNivel() {
+        return cbNivel;
+    }
+
+    public void setCbNivel(String cbNivel) {
+        if (cbEstado.equals("Administrador")){
+            this.cbEstado.setSelectedIndex(1);
+        } else if (cbEstado.equals("Usuário")){
+            this.cbEstado.setSelectedIndex(0);
+        }
+    }
+
+    public JTextField getTxtBairro() {
+        return txtBairro;
+    }
+
+    public void setTxtBairro(String bairro) {
+        this.txtBairro.setText(bairro);
+    }
+
+    public JTextField getTxtCargo() {
+        return txtCargo;
+    }
+
+    public void setTxtCargo(String txtCargo) {
+        this.txtCargo.setText(txtCargo);
+    }
+
+    public JFormattedTextField getTxtCelular() {
+        return txtCelular;
+    }
+
+    public void setTxtCelular(String txtCelular) {
+        this.txtCelular.setText(txtCelular);
+    }
+
+    public JFormattedTextField getTxtCep() {
+        return txtCep;
+    }
+
+    public void setTxtCep(String txtCep) {
+        this.txtCep.setText(txtCep);
+    }
+
+    public JTextField getTxtCidade() {
+        return txtCidade;
+    }
+
+    public void setTxtCidade(String txtCidade) {
+        this.txtCidade.setText(txtCidade);
+    }
+
+    public JTextField getTxtCodigo() {
+        return txtCodigo;
+    }
+
+    public void setTxtCodigo(String txtCodigo) {
+        this.txtCodigo.setText(txtCodigo);
+    }
+
+    public JTextField getTxtComplemento() {
+        return txtComplemento;
+    }
+
+    public void setTxtComplemento(String txtComplemento) {
+        this.txtComplemento.setText(txtComplemento);
+    }
+
+    public JFormattedTextField getTxtCpf() {
+        return txtCpf;
+    }
+
+    public void setTxtCpf(String txtCpf) {
+        this.txtCpf.setText(txtCpf);
+    }
+
+    public JFormattedTextField getTxtDataNascimento() {
+        return txtDataNascimento;
+    }
+
+    public void setTxtDataNascimento(String txtDataNascimento) {
+        this.txtDataNascimento.setText(txtDataNascimento);
+    }
+
+    public JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public void setTxtEmail(String txtEmail) {
+        this.txtEmail.setText(txtEmail);
+    }
+
+    public JTextField getTxtNome() {
+        return txtNome;
+    }
+
+    public void setTxtNome(String txtNome) {
+        this.txtNome.setText(txtNome);
+    }
+
+    public JTextField getTxtNumeroCasa() {
+        return txtNumeroCasa;
+    }
+
+    public void setTxtNumeroCasa(String txtNumeroCasa) {
+        this.txtNumeroCasa.setText(txtNumeroCasa);
+    }
+
+    public JTextField getTxtRG() {
+        return txtRG;
+    }
+
+    public void setTxtRG(String txtRG) {
+        this.txtRG.setText(txtRG);
+    }
+
+    public JTextField getTxtRua() {
+        return txtRua;
+    }
+
+    public void setTxtRua(String txtRua) {
+        this.txtRua.setText(txtRua);
+    }
+
+    public JPasswordField getTxtSenha() {
+        return txtSenha;
+    }
+
+    public void setTxtSenha(String txtSenha) {
+        this.txtSenha.setText(txtSenha);
+    }
+
+    public JFormattedTextField getTxtTelefoneFixo() {
+        return txtTelefoneFixo;
+    }
+
+    public void setTxtTelefoneFixo(String txtTelefoneFixo) {
+        this.txtTelefoneFixo.setText(txtTelefoneFixo);
+    }
     
     
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntCancelar;
     private javax.swing.JButton btnEditar;
@@ -544,4 +713,6 @@ public class CadastroFuncionario extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtSenha;
     private javax.swing.JFormattedTextField txtTelefoneFixo;
     // End of variables declaration//GEN-END:variables
+
+    
 }

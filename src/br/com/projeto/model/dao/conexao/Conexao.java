@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class Conexao {
     
     public Connection getConnection () throws SQLException{
-        Connection conexao = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bdvendas", "teste", "123");
+        Connection conexao = DriverManager.getConnection("jdbc:mysql://127.0.0.1/MerceariaSilva", "Mercearia", "merceariaSilva");
         return conexao;
     }
 }

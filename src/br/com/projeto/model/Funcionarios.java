@@ -31,8 +31,8 @@ public class Funcionarios extends Pessoa {
         this.senha = senha;
     }
 
-    public Funcionarios(String senha, String cargo, String nivel_acesso, String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String dataNascimento, String rg, String cpf) {
-        super(nome, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado);
+    public Funcionarios(String senha, String cargo, String nivel_acesso, String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String ativo, String dataNascimento, String rg, String cpf) {
+        super(nome, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado, ativo);
         this.senha = senha;
         this.cargo = cargo;
         this.nivelAcesso = nivel_acesso;

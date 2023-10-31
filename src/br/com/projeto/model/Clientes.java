@@ -18,28 +18,24 @@ import java.util.logging.Logger;
 public class Clientes extends Pessoa{
   private String rg;
   private String cpf;
-  private Date dataNascimento;
+  private String dataNascimento;
   
 
     public Clientes() {
     }
 
-    public Clientes(String rg, String cpf, String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String dataNascimento) {
-        super(nome, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado);
+    public Clientes(String rg, String cpf, String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String ativo, String dataNascimento) {
+        super(nome, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado, ativo);
         this.rg = rg;
         this.cpf = cpf;
-        try {
-            this.dataNascimento = new SimpleDateFormat("dd/MM/yyyy").parse(dataNascimento);
-        } catch (ParseException ex) {
-            Logger.getLogger(Clientes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.dataNascimento = dataNascimento;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
   

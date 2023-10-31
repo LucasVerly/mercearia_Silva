@@ -22,6 +22,7 @@ abstract public class Pessoa {
   protected String bairro;
   protected String cidade;
   protected String estado;
+  protected String ativo = "true";
 
     public Pessoa() {
     }
@@ -32,7 +33,7 @@ abstract public class Pessoa {
     
     
 
-    public Pessoa(String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado) {
+    public Pessoa(String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String ativo) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
@@ -44,10 +45,17 @@ abstract public class Pessoa {
         this.bairro = bairro;
         this.cidade = cidade;
         this.estado = estado;
+        this.ativo = ativo;
     }
-  
-  
 
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
+    }
+    
     public int getId() {
         return id;
     }

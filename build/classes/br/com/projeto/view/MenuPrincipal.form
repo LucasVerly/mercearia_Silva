@@ -224,8 +224,8 @@
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="userLogado" min="-2" pref="74" max="-2" attributes="0"/>
-                  <EmptySpace pref="1736" max="32767" attributes="0"/>
+                  <Component id="userLogado" min="-2" pref="465" max="-2" attributes="0"/>
+                  <EmptySpace pref="1345" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -256,7 +256,6 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="33" red="33" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Lucas"/>
           </Properties>
         </Component>
       </SubComponents>

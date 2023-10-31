@@ -1,6 +1,8 @@
 package br.com.projeto.view;
 
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 /*
@@ -14,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author LucasVerly
  */
 public class MenuPrincipal extends javax.swing.JFrame {
-    public String usuarioLogado;
+    //public String usuarioLogado;
     /**
      * Creates new form barbearia
      */
@@ -70,7 +72,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         userLogado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         userLogado.setForeground(new java.awt.Color(51, 51, 255));
-        userLogado.setText("Lucas");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -80,8 +81,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(userLogado, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1736, Short.MAX_VALUE))
+                .addComponent(userLogado, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1345, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -330,8 +331,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
         setVisible(true);
     }//GEN-LAST:event_formWindowActivated
 
-    public void setUserLogado(JLabel userLogado) {
-        this.userLogado = userLogado;
+    public void setUserLogado(String usuarioLogado) {
+        userLogado.setText(usuarioLogado);
+    }
+    
+    public void menuUsuario (boolean visible){
+        menuFuncionarios.setEnabled(visible);
+        menuFornecedores.setEnabled(visible);
+        menuProdutos.setEnabled(visible);
+        menuControleCliente.setEnabled(visible);
+        menuControleVenda.setEnabled(visible);
     }
     
     /**
@@ -396,4 +405,5 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuVendas;
     private javax.swing.JLabel userLogado;
     // End of variables declaration//GEN-END:variables
+
 }

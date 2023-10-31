@@ -5,14 +5,15 @@
  */
 package br.com.projeto.controller;
 
-import br.com.projeto.controller.helper.LoginHelper;
 import br.com.projeto.model.Funcionarios;
-import br.com.projeto.model.dao.FuncionariosDAO;
+import br.com.projeto.model.dao.FuncionarioDAO;
 import br.com.projeto.model.dao.conexao.Conexao;
 import br.com.projeto.view.Login;
 import br.com.projeto.view.MenuPrincipal;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,31 +27,41 @@ public class LoginController {
     
     public LoginController(Login view) {
         this.view = view;
-        //this.helper = new LoginHelper(view);
-    }
-    
-    public void entrarNoSistema (){
-        //Funcionarios funcionario = helper.obterModelo();
     }
 
-    public void autenticar() throws SQLException {
+    public void autenticar() {
         //Busca os dados inseridos na view de Login
         String email = view.getTxtEmail().getText().trim();
         String senha = view.getTxtSenha().getText().trim();
+        try {
+            Connection conexao;
+            conexao = new Conexao().getConnection();
+            FuncionarioDAO funcionarioDao = new FuncionarioDAO(conexao);
+            Funcionarios funcionarioDoBanco = new Funcionarios ();
         
-        Funcionarios autenticarFuncionario = new Funcionarios (email, senha);
+            boolean existeFuncionarioNoBanco = funcionarioDao.autenticarPorEmailESenha(email, senha);
+            funcionarioDoBanco = funcionarioDao.nivelDeAcesso(email, senha);
         
-        Connection conexao = new Conexao().getConnection();
-        FuncionariosDAO funcionarioDao = new FuncionariosDAO(conexao);
-        
-        boolean existe = funcionarioDao.autenticarPorEmailESenha(autenticarFuncionario);
-        
-        if (existe){
-            MenuPrincipal menuPrincipal = new MenuPrincipal();
-            menuPrincipal.setVisible(true);
+            if (existeFuncionarioNoBanco){
+             if(funcionarioDoBanco.getNivelAcesso().equals("Administrador")){
+                MenuPrincipal menuPrincipal = new MenuPrincipal();
+                menuPrincipal.setUserLogado(funcionarioDoBanco.getNome()); 
+                menuPrincipal.setVisible(true);
+                view.dispose();
+             } else if(funcionarioDoBanco.getNivelAcesso().equals("Usuário")){
+                MenuPrincipal menuPrincipal = new MenuPrincipal();
+                menuPrincipal.setUserLogado(funcionarioDoBanco.getNome());
+                menuPrincipal.menuUsuario(false);
+                menuPrincipal.setVisible(true);
+                view.dispose();
+            }
         }else {
             JOptionPane.showMessageDialog(view, "Usuário ou senha inválidos");
         }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(view, ex);
+        }
+        
         
     }
     

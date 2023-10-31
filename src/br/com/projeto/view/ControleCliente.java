@@ -5,6 +5,19 @@
  */
 package br.com.projeto.view;
 
+
+import br.com.projeto.model.Clientes;
+import br.com.projeto.model.dao.ClienteDAO;
+import br.com.projeto.model.dao.conexao.Conexao;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author LucasVerly
@@ -14,6 +27,86 @@ public class ControleCliente extends javax.swing.JFrame {
     /**
      * Creates new form Clientes
      */
+    
+    //Metodo para listar os funcionarios na tabela
+    public void listarClientes () throws SQLException{
+        
+        Connection conexao = new Conexao().getConnection();
+        ClienteDAO clienteDao = new ClienteDAO(conexao);
+        ArrayList<Clientes> lista = clienteDao.selectAll();
+        DefaultTableModel dados = (DefaultTableModel) tabelaClientes.getModel();
+
+        dados.setNumRows(0);
+
+        for (Clientes cliente : lista) {
+            dados.addRow(new Object[]{
+                cliente.getNome(),
+                cliente.getCpf(),
+                cliente.getEndereco(),
+                cliente.getCelular()
+            });
+        }
+    }
+    
+    //Metodo para fazer a pesquisa por nome
+    public void pesquisarPorNome(String nome) throws SQLException {
+        
+        Connection conexao = new Conexao().getConnection();
+        ClienteDAO clienteDao = new ClienteDAO(conexao);
+        //Funcionarios funcionario = new Funcionarios();
+        
+        ArrayList<Clientes> lista = clienteDao.selectForName(nome);
+        
+        DefaultTableModel tabela = (DefaultTableModel) tabelaClientes.getModel();
+        
+        tabela.setNumRows(0);
+        
+        for (Clientes cliente : lista){
+            tabela.addRow(new Object[]{
+                cliente.getNome(),
+                cliente.getCpf(),
+                cliente.getEndereco(),
+                cliente.getCelular()
+            });
+        }
+    }
+    
+    //Metodo para excluir funcionario
+    public void excluirCliente(String cpf) throws SQLException {
+        Connection conexao = new Conexao().getConnection();
+        ClienteDAO clienteDao = new ClienteDAO(conexao);
+        clienteDao.deleteCliente(cpf);
+    }
+    
+    //Metodo para editar um funcionario
+    public void editarCliente (String cpf) throws SQLException{
+                Connection conexao = new Conexao().getConnection();
+                ClienteDAO clienteDao = new ClienteDAO(conexao);
+        
+                Clientes clienteParaSerEditado = clienteDao.selectForCpf(cpf);
+        
+                EditarCliente editarCliente = new EditarCliente ();
+                editarCliente.setVisible(true);
+                
+                editarCliente.setTxtCodigo(String.valueOf(clienteParaSerEditado.getId()));
+                editarCliente.setTxtNome(clienteParaSerEditado.getNome());
+                editarCliente.setTxtBairro(clienteParaSerEditado.getBairro());
+                editarCliente.setTxtCelular(clienteParaSerEditado.getCelular());
+                editarCliente.setTxtCep(clienteParaSerEditado.getCep());
+                editarCliente.setTxtCidade(clienteParaSerEditado.getCidade());
+                editarCliente.setTxtComplemento(clienteParaSerEditado.getComplemento());
+                editarCliente.setTxtCpf(clienteParaSerEditado.getCpf());
+                editarCliente.setTxtDataNascimento(clienteParaSerEditado.getDataNascimento());
+                editarCliente.setTxtEmail(clienteParaSerEditado.getEmail());
+                editarCliente.setTxtRua(clienteParaSerEditado.getEndereco());
+                editarCliente.setCbEstado(clienteParaSerEditado.getEstado());
+                editarCliente.setTxtNumeroCasa(clienteParaSerEditado.getNumero());
+                editarCliente.setTxtRG(clienteParaSerEditado.getRg());
+                editarCliente.setTxtTelefoneFixo(clienteParaSerEditado.getTelefone());
+                
+                this.dispose();
+    }
+    
     public ControleCliente() {
         initComponents();
     }
@@ -32,9 +125,9 @@ public class ControleCliente extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaClientes = new javax.swing.JTable();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
@@ -42,6 +135,11 @@ public class ControleCliente extends javax.swing.JFrame {
         bntCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 255));
@@ -74,10 +172,15 @@ public class ControleCliente extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Nome :");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
-        jButton1.setText("Pesquisar");
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -93,7 +196,7 @@ public class ControleCliente extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelaClientes);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -108,7 +211,7 @@ public class ControleCliente extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
-                        .addComponent(jButton1)))
+                        .addComponent(btnPesquisar)))
                 .addContainerGap(130, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -118,7 +221,7 @@ public class ControleCliente extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnPesquisar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -132,20 +235,112 @@ public class ControleCliente extends javax.swing.JFrame {
 
         btnEditar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 440, -1, -1));
 
         btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnExcluir.setText("EXCLUIR");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 440, -1, -1));
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, 10, 10));
 
         bntCancelar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         bntCancelar.setText("CANCELAR");
+        bntCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntCancelarActionPerformed(evt);
+            }
+        });
         getContentPane().add(bntCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 440, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        // TODO add your handling code here:
+        String nome = "%" + txtNome.getText().trim() + "%";;
+        try {
+            pesquisarPorNome(nome);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        try {
+            listarClientes();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btnSalvar.setEnabled(false);
+    }//GEN-LAST:event_formWindowActivated
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tabelaClientes.getSelectedRow();
+        if (linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(this, "Selecione um cliente para editar");
+        } else {
+            String cpfSelecionado;
+            DefaultTableModel Funcionario = (DefaultTableModel) tabelaClientes.getModel();
+            cpfSelecionado = tabelaClientes.getValueAt(linhaSelecionada, 1).toString();
+            try {
+                editarCliente(cpfSelecionado);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControleFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tabelaClientes.getSelectedRow();
+        if (linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(this, "Selecione uma cliente para excluir");
+        } else {
+            int op;
+            op = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o cliente ?");
+            if(op == 0){
+                String cpfSelecionado;
+                cpfSelecionado = tabelaClientes.getValueAt(linhaSelecionada, 1).toString();
+                DefaultTableModel Funcionario = (DefaultTableModel) tabelaClientes.getModel();
+                
+                Funcionario.removeRow(linhaSelecionada);
+                try {
+                    excluirCliente(cpfSelecionado);
+                    JOptionPane.showMessageDialog(this, "Cliente Excluido !!!");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro ao excluir !!!" + ex);
+                }
+            }
+        }
+        try {
+            listarClientes();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
+        // TODO add your handling code here:
+        tabelaClientes.clearSelection();
+        txtNome.setText("");
+        try {
+            listarClientes();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_bntCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,19 +384,29 @@ public class ControleCliente extends javax.swing.JFrame {
         });
     }
 
+    public JTable getTabelaClientes() {
+        return tabelaClientes;
+    }
+
+    public void setTabelaClientes(JTable tabelaClientes) {
+        this.tabelaClientes = tabelaClientes;
+    }
+    
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bntCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabelaClientes;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

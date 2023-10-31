@@ -15,15 +15,24 @@ public class Produto {
     private double preco;
     private int qtd_estoque ;
     private Fornecedores fornecedor;
+    private String ativo = "true";
 
-    public Produto(String descricao, double preco, int qtd_estoque, Fornecedores fornecedor) {
-        this.nomeProduto = descricao;
+    public Produto(String nomeProduto, double preco, int qtd_estoque, Fornecedores fornecedor, String ativo) {
+        this.nomeProduto = nomeProduto;
         this.preco = preco;
         this.qtd_estoque = qtd_estoque;
         this.fornecedor = fornecedor;
+        this.ativo = ativo;
+    }
+
+    public String getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(String ativo) {
+        this.ativo = ativo;
     }
     
-
     public int getId() {
         return id;
     }
@@ -32,11 +41,11 @@ public class Produto {
         this.id = id;
     }
 
-    public String getDescricao() {
+    public String getNomeProduto() {
         return nomeProduto;
     }
 
-    public void setDescricao(String descricao) {
+    public void setNomeProduto(String descricao) {
         this.nomeProduto = descricao;
     }
 

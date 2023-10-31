@@ -16,13 +16,12 @@ public class Fornecedores extends Pessoa{
     public Fornecedores() {
     }
 
-    public Fornecedores(String empresa, String cnpj, String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado) {
-        super(nome, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado);
+    public Fornecedores(String empresa, String cnpj, String nome, String email, String telefone, String celular, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String ativo) {
+        super(nome, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado, ativo);
         this.empresa = empresa;
         this.cnpj = cnpj;
     }
 
-  
     public String getEmpresa() {
         return empresa;
     }
