@@ -68,7 +68,7 @@ public class FornecedorDAO {
             statement.setString(12, fornecedor.getAtivo());
             statement.setString(13, fornecedor.getEmpresa());
             statement.setString(14, fornecedor.getCnpj());
-            statement.setInt(18, fornecedor.getId());
+            statement.setInt(15, fornecedor.getId());
             
             statement.executeUpdate();
     }

@@ -30,9 +30,10 @@ public class EditarFornecedor extends javax.swing.JFrame {
      */
     
     //Metodo para inserir os dados no banco de dados
-    public void insertFornecedor (){
+    public void alterarDadosFornecedor (){
         
         Fornecedores fornecedor = new Fornecedores();
+        fornecedor.setId(Integer.parseInt(getTxtCodigo().getText()));
         fornecedor.setNome(txtNome.getText().trim());
         fornecedor.setBairro(txtBairro.getText().trim());
         fornecedor.setCelular(txtCelular.getText().trim());
@@ -50,11 +51,11 @@ public class EditarFornecedor extends javax.swing.JFrame {
         try {
             Connection conexao = new Conexao().getConnection();
             FornecedorDAO fornecedorDao = new FornecedorDAO(conexao);
-            fornecedorDao.insertFornecedor(fornecedor);
-            JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso !!!");
+            fornecedorDao.updateFornecedor(fornecedor);
+            JOptionPane.showMessageDialog(null, "Funcionário editado com sucesso !!!");
         } catch (SQLException ex) {
             Logger.getLogger(CadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar !!!" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao editar !!!" + ex);
         }
     }
     
@@ -374,7 +375,7 @@ public class EditarFornecedor extends javax.swing.JFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
         
-        insertFornecedor();
+        alterarDadosFornecedor();
         limparTela(painelDados);
     }//GEN-LAST:event_btnSalvarActionPerformed
 
