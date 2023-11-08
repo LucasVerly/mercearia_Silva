@@ -25,8 +25,8 @@ public class ClienteDAO {
     }
     
     public void insertCliente (Clientes cliente) throws SQLException{
-        String sql = "insert into tb_clientes (nome,rg,cpf,email,telefone,celular,cep,endereco,numero,complemento,bairro,cidade,estado,ativo)"
-                    + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into tb_clientes (nome,rg,cpf,email,telefone,celular,cep,endereco,numero,complemento,bairro,cidade,estado,ativo, dataNascimento)"
+                    + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             
@@ -44,6 +44,7 @@ public class ClienteDAO {
             statement.setString(12, cliente.getCidade());
             statement.setString(13, cliente.getEstado());
             statement.setString(14, cliente.getAtivo());
+            statement.setString(15, cliente.getDataNascimento());
             
             statement.execute();
     }
@@ -78,6 +79,7 @@ public class ClienteDAO {
             clienteComDadosDoBanco.setCidade(resultSet.getString("cidade"));
             clienteComDadosDoBanco.setEstado(resultSet.getString("estado"));
             clienteComDadosDoBanco.setAtivo(resultSet.getString("ativo"));
+            clienteComDadosDoBanco.setDataNascimento(resultSet.getString("dataNascimento"));
             
             clientes.add(clienteComDadosDoBanco);
         }
@@ -117,7 +119,7 @@ public class ClienteDAO {
 
     public void updateCliente(Clientes cliente) throws SQLException {
         
-        String sql = "update tb_clientes set nome = ?,rg = ?,cpf = ?,email = ?, telefone = ?,celular = ?,cep = ?,endereco = ?,numero = ?,complemento = ?,bairro = ?,cidade = ?,estado = ?, ativo = ? where id = ?";
+        String sql = "update tb_clientes set nome = ?,rg = ?,cpf = ?,email = ?, telefone = ?,celular = ?,cep = ?,endereco = ?,numero = ?,complemento = ?,bairro = ?,cidade = ?,estado = ?, ativo = ?, dataNascimento = ? where id = ?";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             
@@ -135,7 +137,9 @@ public class ClienteDAO {
             statement.setString(12, cliente.getCidade());
             statement.setString(13, cliente.getEstado());
             statement.setString(14, cliente.getAtivo());
-            statement.setInt(15, cliente.getId());
+            statement.setString(15, cliente.getDataNascimento());
+            statement.setInt(16, cliente.getId());
+            
             
             statement.executeUpdate();
     }

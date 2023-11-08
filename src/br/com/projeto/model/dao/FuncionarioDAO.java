@@ -26,8 +26,8 @@ public class FuncionarioDAO {
     }
 
     public void insertFuncionario(Funcionarios funcionario) throws SQLException {
-            String sql = "insert into tb_funcionarios (nome,rg,cpf,email,senha,cargo,nivel_acesso,telefone,celular,cep,endereco,numero,complemento,bairro,cidade,estado,ativo)"
-                    + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql = "insert into tb_funcionarios (nome,rg,cpf,email,senha,cargo,nivel_acesso,telefone,celular,cep,endereco,numero,complemento,bairro,cidade,estado,ativo,dataNascimento)"
+                    + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             
@@ -48,13 +48,14 @@ public class FuncionarioDAO {
             statement.setString(15, funcionario.getCidade());
             statement.setString(16, funcionario.getEstado());
             statement.setString(17, funcionario.getAtivo());
+            statement.setString(18, funcionario.getDataNascimento());
             
             statement.execute();
     }
 
     public void updateFuncionario (Funcionarios funcionario) throws SQLException{
         
-        String sql = "update tb_funcionarios set nome = ?,rg = ?,cpf = ?,email = ?,senha = ?,cargo = ?,nivel_acesso = ?, telefone = ?,celular = ?,cep = ?,endereco = ?,numero = ?,complemento = ?,bairro = ?,cidade = ?,estado = ?, ativo = ? where id = ?";
+        String sql = "update tb_funcionarios set nome = ?,rg = ?,cpf = ?,email = ?,senha = ?,cargo = ?,nivel_acesso = ?, telefone = ?,celular = ?,cep = ?,endereco = ?,numero = ?,complemento = ?,bairro = ?,cidade = ?,estado = ?, ativo = ?, dataNascimento = ? where id = ?";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             
@@ -75,7 +76,8 @@ public class FuncionarioDAO {
             statement.setString(15, funcionario.getCidade());
             statement.setString(16, funcionario.getEstado());
             statement.setString(17, funcionario.getAtivo());
-            statement.setInt(18, funcionario.getId());
+            statement.setString(18, funcionario.getDataNascimento());
+            statement.setInt(19, funcionario.getId());
             
             statement.executeUpdate();
     }
@@ -123,6 +125,7 @@ public class FuncionarioDAO {
             funcionarioComDadosDoBanco.setCidade(resultSet.getString("cidade"));
             funcionarioComDadosDoBanco.setEstado(resultSet.getString("estado"));
             funcionarioComDadosDoBanco.setAtivo(resultSet.getString("ativo"));
+            funcionarioComDadosDoBanco.setDataNascimento(resultSet.getString("dataNascimento"));
             
             funcionarios.add(funcionarioComDadosDoBanco);
         }

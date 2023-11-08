@@ -1,0 +1,110 @@
+CREATE DATABASE MerceariaSilva;
+
+CREATE USER 'Mercearia'@'%' IDENTIFIED BY 'merceariaSilva';
+
+GRANT ALL ON *.* TO 'Mercearia'@'%' WITH GRANT OPTION;
+
+flush privileges;
+
+USE MerceariaSilva;
+
+/***** TABELA CLIENTES *****/
+CREATE TABLE tb_clientes (
+  id int auto_increment primary key,
+  nome varchar(100),
+  rg varchar (30),
+  cpf varchar (20),
+  email varchar(200),
+  telefone varchar(30),
+  celular varchar(30),
+  cep varchar(100),
+  endereco varchar (255),
+  numero varchar (25),
+  complemento varchar (200),
+  bairro varchar (100),
+  cidade varchar (100),
+  estado varchar (2),
+  ativo varchar (50),
+  dataNascimento varchar(10)
+);
+/*****************/
+
+/***** TABELA FORNECEDORES *****/
+CREATE TABLE tb_fornecedores (
+  id int auto_increment primary key,
+  nome varchar(100),
+  cnpj varchar (100),
+  email varchar(200),
+  telefone varchar(30),
+  celular varchar(30),
+  cep varchar(100),
+  endereco varchar (255),
+  numero varchar (25),
+  complemento varchar (200),
+  bairro varchar (100),
+  cidade varchar (100),
+  estado varchar (2),
+  ativo varchar (50),
+  empresa varchar(100)
+);
+/*****************/
+
+/***** TABELA FUNCIONARIOS *****/
+CREATE TABLE tb_funcionarios (
+  id int auto_increment primary key,
+  nome varchar(100),
+  rg varchar (30),
+  cpf varchar (20),
+  email varchar(200),
+  senha varchar(10),
+  cargo varchar(100),
+  nivel_acesso varchar(50),
+  telefone varchar(30),
+  celular varchar(30),
+  cep varchar(100),
+  endereco varchar (255),
+  numero varchar (25),
+  complemento varchar (200),
+  bairro varchar (100),
+  cidade varchar (100),
+  estado varchar (2),
+  ativo varchar (50),
+  dataNascimento varchar(10)
+);
+/*****************/
+
+
+/***** TABELA PRODUTOS *****/
+CREATE TABLE tb_produtos (
+  id int auto_increment primary key,
+  descricao varchar(100),
+  preco varchar (25),
+  qtd_estoque varchar (1000),
+  ativo varchar (50),
+  for_id int,
+  FOREIGN KEY (for_id) REFERENCES tb_fornecedores(id)
+);
+/*****************/
+
+/***** TABELA VENDAS *****/
+CREATE TABLE tb_vendas (
+  id int auto_increment primary key,
+  cliente_id int,
+  data_venda varchar (20),
+  total_venda varchar (100),
+  observacoes varchar (200),
+  FOREIGN KEY (cliente_id) REFERENCES tb_clientes(id)
+);
+/*****************/
+
+/***** TABELA ITENS_VENDAS *****/
+CREATE TABLE tb_itensvendas (
+  id int auto_increment primary key,
+  venda_id int,
+  produto_id int,
+  qtd varchar (100),
+  subtotal varchar (100),
+  FOREIGN KEY (venda_id) REFERENCES tb_vendas(id),
+  FOREIGN KEY (produto_id) REFERENCES tb_produtos(id)
+);
+/*****************/
