@@ -3,12 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/ControleFuncionario.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroCliente.java</file>
             <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroFornecedor.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/FuncionarioDAO.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/ControleCliente.java</file>
             <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/FornecedorDAO.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/MenuPrincipal.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/EditarFuncionario.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/Pessoa.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/ControleFornecedor.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/Fornecedores.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/ClienteDAO.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/EditarCliente.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/EditarFornecedor.java</file>
         </group>
     </open-files>
 </project-private>

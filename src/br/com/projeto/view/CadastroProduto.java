@@ -5,6 +5,16 @@
  */
 package br.com.projeto.view;
 
+import br.com.projeto.model.Fornecedores;
+import br.com.projeto.model.dao.FornecedorDAO;
+import br.com.projeto.model.dao.conexao.Conexao;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author LucasVerly
@@ -14,6 +24,20 @@ public class CadastroProduto extends javax.swing.JFrame {
     /**
      * Creates new form Clientes
      */
+    
+    public void atualizaFornecedor () throws SQLException{
+        
+        Connection conexao = new Conexao().getConnection(); 
+        FornecedorDAO fornecedorDao = new FornecedorDAO(conexao);
+        ArrayList<Fornecedores> fornecedores = fornecedorDao.selectAll();
+        DefaultComboBoxModel comboBoxModel1 = (DefaultComboBoxModel) cbFornecedor.getModel();
+        
+        for (Fornecedores fornecedor : fornecedores){
+            comboBoxModel1.addElement(fornecedor);
+        }
+        
+    }
+    
     public CadastroProduto() {
         initComponents();
     }
@@ -47,6 +71,11 @@ public class CadastroProduto extends javax.swing.JFrame {
         bntCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 255));
@@ -168,6 +197,16 @@ public class CadastroProduto extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            atualizaFornecedor();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadastroProduto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
