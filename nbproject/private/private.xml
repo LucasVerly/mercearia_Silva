@@ -3,16 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroCliente.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroFornecedor.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/ControleCliente.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroFuncionario.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/ControleProduto.java</file>
             <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/FornecedorDAO.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/Pessoa.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroProduto.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/Produto.java</file>
             <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/ControleFornecedor.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/Fornecedores.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/ClienteDAO.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/EditarCliente.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/EditarFornecedor.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/ProdutoDAO.java</file>
         </group>
     </open-files>
 </project-private>

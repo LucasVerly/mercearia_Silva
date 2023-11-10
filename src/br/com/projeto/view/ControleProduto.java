@@ -5,6 +5,17 @@
  */
 package br.com.projeto.view;
 
+import br.com.projeto.model.Produto;
+import br.com.projeto.model.dao.ProdutoDAO;
+import br.com.projeto.model.dao.conexao.Conexao;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author LucasVerly
@@ -14,6 +25,38 @@ public class ControleProduto extends javax.swing.JFrame {
     /**
      * Creates new form Clientes
      */
+    
+    public void listarProdutos () {
+        
+        Connection conexao;
+        try {
+            conexao = new Conexao().getConnection();
+            ProdutoDAO produtoDao = new ProdutoDAO(conexao);
+            ArrayList<Produto> lista = produtoDao.selectAll();
+            DefaultTableModel dados = (DefaultTableModel) tabelaProdutos.getModel();
+
+            dados.setNumRows(0);
+
+            for (Produto produto : lista) {
+                dados.addRow(new Object[]{
+                    produto.getId(),
+                    produto.getNomeProduto(),
+                    produto.getPreco(),
+                    produto.getQtd_estoque(),
+                    produto.getFornecedor()
+                });
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleProduto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void excluirProduto(int codigo) throws SQLException {
+        Connection conexao = new Conexao().getConnection();
+        ProdutoDAO fornecedorDao = new ProdutoDAO(conexao);
+        fornecedorDao.deleteProduto(codigo);
+    }
+    
     public ControleProduto() {
         initComponents();
     }
@@ -34,7 +77,7 @@ public class ControleProduto extends javax.swing.JFrame {
         txtNome = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaProdutos = new javax.swing.JTable();
         btnSalvar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
@@ -42,6 +85,11 @@ public class ControleProduto extends javax.swing.JFrame {
         bntCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 255));
@@ -77,7 +125,7 @@ public class ControleProduto extends javax.swing.JFrame {
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
         jButton1.setText("Pesquisar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -88,12 +136,19 @@ public class ControleProduto extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelaProdutos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -136,16 +191,64 @@ public class ControleProduto extends javax.swing.JFrame {
 
         btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnExcluir.setText("EXCLUIR");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnExcluir, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 440, -1, -1));
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, 10, 10));
 
         bntCancelar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         bntCancelar.setText("CANCELAR");
+        bntCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntCancelarActionPerformed(evt);
+            }
+        });
         getContentPane().add(bntCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 440, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        listarProdutos();
+        btnSalvar.setEnabled(false);
+    }//GEN-LAST:event_formWindowActivated
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tabelaProdutos.getSelectedRow();
+        if (linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(this, "Selecione uma produto para excluir");
+        } else {
+            int op;
+            op = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o produto ?");
+            if(op == 0){
+                int codigoSelecionado;
+                codigoSelecionado = (int) tabelaProdutos.getValueAt(linhaSelecionada, 0);
+                System.out.println(codigoSelecionado);
+                DefaultTableModel produto = (DefaultTableModel) tabelaProdutos.getModel();
+                
+                produto.removeRow(linhaSelecionada);
+                try {
+                    excluirProduto(codigoSelecionado);
+                    JOptionPane.showMessageDialog(this, "produto Excluido !!!");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro ao excluir !!!" + ex);
+                }
+            }
+        }
+        listarProdutos();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
+        // TODO add your handling code here:
+        tabelaProdutos.clearSelection();
+        txtNome.setText("");
+    }//GEN-LAST:event_bntCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,7 +312,7 @@ public class ControleProduto extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabelaProdutos;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

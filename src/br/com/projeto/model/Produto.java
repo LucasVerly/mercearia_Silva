@@ -17,6 +17,10 @@ public class Produto {
     private Fornecedores fornecedor;
     private String ativo = "true";
 
+    public Produto() {
+        
+    }
+
     public Produto(String nomeProduto, double preco, int qtd_estoque, Fornecedores fornecedor, String ativo) {
         this.nomeProduto = nomeProduto;
         this.preco = preco;
