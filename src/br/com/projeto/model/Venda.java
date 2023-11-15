@@ -18,17 +18,18 @@ import java.util.logging.Logger;
 public class Venda {
     private int id;
     private Clientes cliente;
-    private Date dataVenda;
+    private String dataVenda;
     private double total_venda;
+
+    public Venda() {
+        
+    }
 
     public Venda(Clientes cliente, String dataVenda, double total_venda) {
         this.cliente = cliente;
+        this.dataVenda = dataVenda;
         this.total_venda = total_venda;
-        try {
-            this.dataVenda = new SimpleDateFormat("dd/MM/yyyy").parse(dataVenda);
-        } catch (ParseException ex) {
-            Logger.getLogger(Venda.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         
     }
     
@@ -48,11 +49,11 @@ public class Venda {
         this.cliente = cliente;
     }
 
-    public Date getDataVenda() {
+    public String getDataVenda() {
         return dataVenda;
     }
 
-    public void setDataVenda(Date data_venda) {
+    public void setDataVenda(String data_venda) {
         this.dataVenda = dataVenda;
     }
 

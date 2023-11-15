@@ -57,6 +57,54 @@ public class ControleProduto extends javax.swing.JFrame {
         fornecedorDao.deleteProduto(codigo);
     }
     
+    public void editarProduto (String codigo) throws SQLException {
+        Connection conexao = new Conexao().getConnection();
+        ProdutoDAO produtoDao = new ProdutoDAO(conexao);
+        
+        Produto produtoParaSerEditado = produtoDao.selectForCodigo(Integer.parseInt(codigo));
+        
+        EditarProduto editarProduto = new EditarProduto();
+        editarProduto.setVisible(true);
+        
+        editarProduto.getTxtCodigo().setText(String.valueOf(produtoParaSerEditado.getId()));
+        editarProduto.getTxtNomeProduto().setText(produtoParaSerEditado.getNomeProduto());
+        editarProduto.getTxtPreco().setText(String.valueOf(produtoParaSerEditado.getPreco()));
+        editarProduto.getTxtQuantidade().setText(String.valueOf(produtoParaSerEditado.getQtd_estoque()));
+        editarProduto.getTxtFornecedor().setText(produtoParaSerEditado.getFornecedor().getEmpresa());
+        this.dispose();
+        
+    }
+    
+    private void pesquisarPorNome(String nome) {
+        
+        Connection conexao;
+        try {
+            conexao = new Conexao().getConnection();
+            
+            ProdutoDAO produtoDao = new ProdutoDAO(conexao);
+        
+        ArrayList<Produto> lista = produtoDao.selectForName(nome);
+        
+        DefaultTableModel tabela = (DefaultTableModel) tabelaProdutos.getModel();
+        
+        tabela.setNumRows(0);
+
+            for (Produto produto : lista) {
+                tabela.addRow(new Object[]{
+                    produto.getId(),
+                    produto.getNomeProduto(),
+                    produto.getPreco(),
+                    produto.getQtd_estoque(),
+                    produto.getFornecedor()
+                });
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleProduto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
     public ControleProduto() {
         initComponents();
     }
@@ -75,7 +123,7 @@ public class ControleProduto extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaProdutos = new javax.swing.JTable();
         btnSalvar = new javax.swing.JButton();
@@ -122,8 +170,13 @@ public class ControleProduto extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Nome :");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
-        jButton1.setText("Pesquisar");
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
+        btnPesquisar.setText("Pesquisar");
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -163,7 +216,7 @@ public class ControleProduto extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
-                        .addComponent(jButton1)))
+                        .addComponent(btnPesquisar)))
                 .addContainerGap(130, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -173,7 +226,7 @@ public class ControleProduto extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnPesquisar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -187,6 +240,11 @@ public class ControleProduto extends javax.swing.JFrame {
 
         btnEditar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnEditar.setText("EDITAR");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 440, -1, -1));
 
         btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -248,7 +306,31 @@ public class ControleProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
         tabelaProdutos.clearSelection();
         txtNome.setText("");
+        listarProdutos();
     }//GEN-LAST:event_bntCancelarActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tabelaProdutos.getSelectedRow();
+        if (linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(this, "Selecione um produto para ser editado");
+        } else {
+            String codigoSelecionado;
+            DefaultTableModel Produto = (DefaultTableModel) tabelaProdutos.getModel();
+            codigoSelecionado = tabelaProdutos.getValueAt(linhaSelecionada, 0).toString();
+            try {
+                editarProduto(codigoSelecionado);
+            } catch (SQLException ex) {
+                Logger.getLogger(ControleProduto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        // TODO add your handling code here:
+        String nome = "%" + txtNome.getText().trim() + "%";
+        pesquisarPorNome(nome);
+    }//GEN-LAST:event_btnPesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -304,8 +386,8 @@ public class ControleProduto extends javax.swing.JFrame {
     private javax.swing.JButton bntCancelar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel3;
@@ -315,4 +397,6 @@ public class ControleProduto extends javax.swing.JFrame {
     private javax.swing.JTable tabelaProdutos;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
+
+    
 }

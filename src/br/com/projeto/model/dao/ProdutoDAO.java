@@ -42,6 +42,7 @@ public class ProdutoDAO {
     
     private ArrayList<Produto> pesquisa(PreparedStatement statement) throws SQLException {
         ArrayList<Produto> produto = new ArrayList<Produto>();
+        
         statement.execute();
         ResultSet resultSet = statement.getResultSet();
         
@@ -78,6 +79,71 @@ public class ProdutoDAO {
         statement.setInt(2, codigo);
         statement.execute();
     }
+
+    public Produto selectForCodigo(int codigo) throws SQLException {
+        String ativo = "true";
+        String sql = "select p.id, p.descricao, p.preco, p.qtd_estoque, p.ativo, f.empresa from tb_produtos as p inner join tb_fornecedores as f on p.for_id = f.id where p.ativo = ? and p.id = ?";
+        
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, ativo);
+        statement.setInt(2, codigo);
+        
+        
+        
+        return pesquisa(statement).get(0);
+    }
+
+    public void updateProduto(int codigo, String quantidade, String preco) throws SQLException {
+        String sql = "update tb_produtos set qtd_estoque = ?, preco = ? where id = ?";
+        
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        statement.setString(1, quantidade);
+        statement.setString(2, preco);
+        statement.setInt(3, codigo);
+        
+        statement.executeUpdate();
+        
+    }
+
+    public ArrayList<Produto> selectForName(String nome) throws SQLException {
+        String sql = "select p.id, p.descricao, p.preco, p.qtd_estoque, p.ativo, f.empresa from tb_produtos as p inner join tb_fornecedores as f on p.for_id = f.id where p.ativo = ? and p.descricao like ?";
+        String ativo = "true";
+        
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        statement.setString(1, ativo);
+        statement.setString(2, nome);
+        
+        return pesquisa(statement);
+    }
+
+    public int retornaEstoque(int id) throws SQLException {
+        int qtdEstoque = 0;
+        
+        String sql = "select qtd_estoque from tb_produtos where id =?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, id);
+        
+        ResultSet result = statement.executeQuery();
+        
+        while (result.next()){
+            Produto p = new Produto();
+            qtdEstoque = (result.getInt("qtd_estoque"));
+        }
+        return qtdEstoque;
+    }
+
+    public void baixaEstoque(int id, int qtdAtualizada) throws SQLException {
+        String sql = "update tb_produtos set qtd_estoque = ? where id = ?";
+        
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, qtdAtualizada);
+        statement.setInt(2, id);
+        
+        statement.execute();
+    }
+    
     
    
 }

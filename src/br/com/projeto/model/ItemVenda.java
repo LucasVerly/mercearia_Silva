@@ -16,6 +16,10 @@ public class ItemVenda {
     private int qtd;
     private double subtotal;
 
+    public ItemVenda() {
+        
+    }
+
     public ItemVenda(Venda venda, Produto produto, int qtd, double subtotal) {
         this.venda = venda;
         this.produto = produto;

@@ -5,15 +5,66 @@
  */
 package br.com.projeto.view;
 
+import br.com.projeto.model.Clientes;
+import br.com.projeto.model.Produto;
+import br.com.projeto.model.dao.ClienteDAO;
+import br.com.projeto.model.dao.ProdutoDAO;
+import br.com.projeto.model.dao.conexao.Conexao;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author LucasVerly
  */
 public class PainelVenda extends javax.swing.JFrame {
+        
+    int quant;
+    double preco, total, subTotal;
+    DefaultTableModel carrinho;
+    Clientes cliente = new Clientes();
 
     /**
      * Creates new form Clientes
      */
+    
+    private void pesquisarProduto(int codigo) {
+        
+        try {
+            Connection conexao = new Conexao().getConnection();
+            ProdutoDAO produtoDao = new ProdutoDAO(conexao);
+            Produto produto = produtoDao.selectForCodigo(codigo);
+            
+            txtNomeProduto.setText(produto.getNomeProduto());
+            txtPreco.setText(String.valueOf(produto.getPreco()));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(PainelVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    private void pesquisarCliente(String cpf) {
+        
+        try {
+            Connection conexao = new Conexao().getConnection();
+            ClienteDAO clienteDao = new ClienteDAO(conexao);
+            cliente = clienteDao.selectForCpf(cpf);
+            
+            txtNome.setText(cliente.getNome());
+        } catch (SQLException ex) {
+            Logger.getLogger(PainelVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     public PainelVenda() {
         initComponents();
     }
@@ -32,16 +83,18 @@ public class PainelVenda extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtNome = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnPesquisarCliente = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtCpf = new javax.swing.JFormattedTextField();
-        btnSalvar = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        txtData = new javax.swing.JTextField();
+        btnPagamento = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         bntCancelar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        txtNome1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        txtNomeProduto = new javax.swing.JTextField();
+        btnPesquisarProduto = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -52,12 +105,17 @@ public class PainelVenda extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         btnExcluirItem = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaItens = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 255));
@@ -91,8 +149,13 @@ public class PainelVenda extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("CPF :");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
-        jButton1.setText("Pesquisar");
+        btnPesquisarCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
+        btnPesquisarCliente.setText("Pesquisar");
+        btnPesquisarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarClienteActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Nome :");
@@ -103,6 +166,9 @@ public class PainelVenda extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Data :");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -111,15 +177,19 @@ public class PainelVenda extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(92, 92, 92)
-                        .addComponent(jButton1)))
+                        .addComponent(btnPesquisarCliente))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel10))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -128,24 +198,38 @@ public class PainelVenda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton1)
+                    .addComponent(btnPesquisarCliente)
                     .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 450, 170));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 450, 180));
 
-        btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnSalvar.setText("PAGAMENTO");
-        getContentPane().add(btnSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, -1, -1));
+        btnPagamento.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnPagamento.setText("PAGAMENTO");
+        btnPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagamentoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnPagamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, -1, -1));
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 500, 10, 10));
 
         bntCancelar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         bntCancelar.setText("CANCELAR");
+        bntCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntCancelarActionPerformed(evt);
+            }
+        });
         getContentPane().add(bntCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 540, -1, -1));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -154,8 +238,13 @@ public class PainelVenda extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Código :");
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
-        jButton2.setText("Pesquisar");
+        btnPesquisarProduto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/projeto/imagens/icons/buscar.png"))); // NOI18N
+        btnPesquisarProduto.setText("Pesquisar");
+        btnPesquisarProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarProdutoActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Produto :");
@@ -168,6 +257,11 @@ public class PainelVenda extends javax.swing.JFrame {
 
         btnAdicionarItem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnAdicionarItem.setText("ADICIONAR ITEM");
+        btnAdicionarItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -191,11 +285,11 @@ public class PainelVenda extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(58, 58, 58)
-                                .addComponent(jButton2))
+                                .addComponent(btnPesquisarProduto))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtNome1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(118, 118, 118)
                         .addComponent(btnAdicionarItem)))
@@ -207,12 +301,12 @@ public class PainelVenda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jButton2)
+                    .addComponent(btnPesquisarProduto)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtNome1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -234,15 +328,30 @@ public class PainelVenda extends javax.swing.JFrame {
         btnExcluirItem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnExcluirItem.setText("EXCLUIR ITEM");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaItens.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
                 "Código", "Produto", "Quantidade", "Preço", "Sub Total"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tabelaItens);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel8.setText("Valor Total :");
@@ -286,6 +395,84 @@ public class PainelVenda extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        txtNome.setEnabled(false);
+        txtNomeProduto.setEnabled(false);
+        txtPreco.setEnabled(false);
+        
+        Date agora = new Date();
+
+        SimpleDateFormat brDate = new SimpleDateFormat("dd/MM/yyyy");
+        String dataformatada = brDate.format(agora);
+        txtData.setText(dataformatada);
+    }//GEN-LAST:event_formWindowActivated
+
+    private void btnPesquisarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarProdutoActionPerformed
+        // TODO add your handling code here:
+        int codigo = Integer.parseInt(txtCodigo.getText().trim());
+        pesquisarProduto(codigo);
+       
+    }//GEN-LAST:event_btnPesquisarProdutoActionPerformed
+
+    private void btnPesquisarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarClienteActionPerformed
+        // TODO add your handling code here:
+        String cpf = txtCpf.getText().trim();
+        pesquisarCliente(cpf);
+    }//GEN-LAST:event_btnPesquisarClienteActionPerformed
+
+    private void btnAdicionarItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarItemActionPerformed
+        // TODO add your handling code here:
+  
+        if (txtQuantidade.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Informe a quantidade !!!");
+        } else {
+            quant = Integer.parseInt(txtQuantidade.getText().trim());
+            preco = Double.parseDouble(txtPreco.getText().trim());
+            
+            subTotal = quant * preco;
+            total += subTotal;
+            
+            txtTotal.setText(String.valueOf(total).format("%.2f", total));
+                    
+            carrinho = (DefaultTableModel) tabelaItens.getModel();
+            
+            carrinho.addRow(new Object[]{
+                txtCodigo.getText(),
+                txtNomeProduto.getText(),
+                txtQuantidade.getText(),
+                txtPreco.getText(),
+                subTotal
+            });
+            txtCodigo.setText("");
+            txtNomeProduto.setText("");
+            txtPreco.setText("");
+            txtQuantidade.setText("");
+        }
+    }//GEN-LAST:event_btnAdicionarItemActionPerformed
+
+    private void bntCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntCancelarActionPerformed
+        // TODO add your handling code here:
+        int op;
+        op = JOptionPane.showConfirmDialog(null, "Tem certeza que quer cancelar a venda ?");
+        
+        if(op == 0){
+            this.dispose();
+        }
+    }//GEN-LAST:event_bntCancelarActionPerformed
+
+    private void btnPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagamentoActionPerformed
+        // TODO add your handling code here:
+        Pagamento telaPagamento = new Pagamento();
+        
+        telaPagamento.getTxtTotal().setText(String.valueOf(total).format("%.2f", total));
+        telaPagamento.carrinho = this.carrinho;
+        telaPagamento.cliente = this.cliente;
+        
+        telaPagamento.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPagamentoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -357,10 +544,11 @@ public class PainelVenda extends javax.swing.JFrame {
     private javax.swing.JButton bntCancelar;
     private javax.swing.JButton btnAdicionarItem;
     private javax.swing.JButton btnExcluirItem;
-    private javax.swing.JButton btnSalvar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnPagamento;
+    private javax.swing.JButton btnPesquisarCliente;
+    private javax.swing.JButton btnPesquisarProduto;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -375,13 +563,15 @@ public class PainelVenda extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabelaItens;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JFormattedTextField txtCpf;
+    private javax.swing.JTextField txtData;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtNome1;
+    private javax.swing.JTextField txtNomeProduto;
     private javax.swing.JTextField txtPreco;
     private javax.swing.JTextField txtQuantidade;
     private javax.swing.JLabel txtTotal;
     // End of variables declaration//GEN-END:variables
+  
 }

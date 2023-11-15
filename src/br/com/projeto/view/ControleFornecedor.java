@@ -273,7 +273,7 @@ public class ControleFornecedor extends javax.swing.JFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         // TODO add your handling code here:
-        String nome = "%" + txtNome.getText().trim() + "%";;
+        String nome = "%" + txtNome.getText().trim() + "%";
         try {
             pesquisarPorNome(nome);
         } catch (SQLException ex) {
@@ -341,6 +341,11 @@ public class ControleFornecedor extends javax.swing.JFrame {
         // TODO add your handling code here:
         tabelaFornecedores.clearSelection();
         txtNome.setText("");
+        try {
+            listarFornecedores();
+        } catch (SQLException ex) {
+            Logger.getLogger(ControleFornecedor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_bntCancelarActionPerformed
 
     /**
