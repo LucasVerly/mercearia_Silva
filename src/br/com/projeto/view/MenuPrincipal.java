@@ -22,6 +22,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
      */
     public MenuPrincipal() {
         initComponents();
+        
     }
 
     /**
@@ -329,6 +330,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         this.setExtendedState(this.MAXIMIZED_BOTH);
         //userLogado.setText(usuarioLogado);
         setVisible(true);
+        menuControleVenda.setEnabled(false);
     }//GEN-LAST:event_formWindowActivated
 
     public void setUserLogado(String usuarioLogado) {

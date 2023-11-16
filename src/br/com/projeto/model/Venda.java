@@ -53,7 +53,7 @@ public class Venda {
         return dataVenda;
     }
 
-    public void setDataVenda(String data_venda) {
+    public void setDataVenda(String dataVenda) {
         this.dataVenda = dataVenda;
     }
 

@@ -171,10 +171,10 @@ public class Pagamento extends javax.swing.JFrame {
         double cartao = 0.0, dinheiro = 0.0, recebido = 0.0, troco = 0.0, totalVenda;
         
         if (!txtCartao.getText().trim().isEmpty()){
-            cartao = Double.parseDouble(txtCartao.getText().trim());
+            cartao = Double.parseDouble(txtCartao.getText().trim().replaceAll(",", "."));
         }
         if (!txtDinheiro.getText().trim().isEmpty()){
-            dinheiro = Double.parseDouble(txtDinheiro.getText().trim());
+            dinheiro = Double.parseDouble(txtDinheiro.getText().trim().replaceAll(",", "."));
         }
         
         totalVenda = Double.parseDouble(txtTotal.getText().replace(",", "."));
@@ -185,10 +185,11 @@ public class Pagamento extends javax.swing.JFrame {
         venda.setCliente(cliente);
         
         Date dataAtual = new Date();
-        SimpleDateFormat brDate = new SimpleDateFormat("yyyy-MM/-dd");
+        SimpleDateFormat brDate = new SimpleDateFormat("dd/MM/yyyy");
         String dataMysql = brDate.format(dataAtual);
-        
+        System.out.println(dataMysql);
         venda.setDataVenda(dataMysql);
+        System.out.println(venda.getDataVenda());
         venda.setTotal_venda(totalVenda);
         
         Connection conexao;

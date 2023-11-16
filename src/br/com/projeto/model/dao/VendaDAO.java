@@ -5,11 +5,13 @@
  */
 package br.com.projeto.model.dao;
 
+import br.com.projeto.model.Clientes;
 import br.com.projeto.model.Venda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -49,6 +51,55 @@ public class VendaDAO {
         }
         return idVenda;
         
+    }
+
+    public ArrayList<Venda> listarVendaPorPeriodo(String dataInicial, String dataFinal) throws SQLException {
+        ArrayList lista = new ArrayList();
+        
+        String sql = "SELECT d.id, d.data_venda, c.nome, d.total_venda\n" +
+                    "FROM tb_vendas as d\n" +
+                    "INNER JOIN tb_clientes as c ON (d.cliente_id = c.id)\n" +
+                    "WHERE STR_TO_DATE(d.data_venda, '%d/%m/%Y') BETWEEN STR_TO_DATE(?, '%d/%m/%Y') AND STR_TO_DATE(?, '%d/%m/%Y');";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, dataInicial);
+        statement.setString(2, dataFinal);
+        ResultSet result = statement.executeQuery();
+        
+        while (result.next()){
+            Venda venda = new Venda();
+            Clientes cliente = new Clientes();
+            
+            venda.setId(result.getInt("id"));
+            venda.setDataVenda(result.getString("data_venda"));
+            cliente.setNome(result.getString("nome"));
+            venda.setCliente(cliente);
+            venda.setTotal_venda(Double.parseDouble(result.getString("total_venda")));
+            lista.add(venda);
+        }
+        return lista;
+    }
+
+    public ArrayList<Venda> listarVendas() throws SQLException {
+        ArrayList lista = new ArrayList();
+        
+        String sql = "select d.id, d.data_venda, c.nome, d.total_venda from tb_vendas as d inner join tb_clientes as c on ( d.cliente_id = c.id) order by d.id ";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        
+        
+        ResultSet result = statement.executeQuery();
+        
+        while (result.next()){
+            Venda venda = new Venda();
+            Clientes cliente = new Clientes();
+            
+            venda.setId(result.getInt("id"));
+            venda.setDataVenda(result.getString("data_venda"));
+            cliente.setNome(result.getString("nome"));
+            venda.setCliente(cliente);
+            venda.setTotal_venda(Double.parseDouble(result.getString("total_venda")));
+            lista.add(venda);
+        }
+        return lista;
     }
     
     

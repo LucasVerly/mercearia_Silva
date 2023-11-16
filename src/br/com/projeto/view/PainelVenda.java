@@ -327,6 +327,11 @@ public class PainelVenda extends javax.swing.JFrame {
 
         btnExcluirItem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnExcluirItem.setText("EXCLUIR ITEM");
+        btnExcluirItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirItemActionPerformed(evt);
+            }
+        });
 
         tabelaItens.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -473,6 +478,26 @@ public class PainelVenda extends javax.swing.JFrame {
         telaPagamento.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnPagamentoActionPerformed
+
+    private void btnExcluirItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirItemActionPerformed
+        // TODO add your handling code here:
+        int linhaSelecionada = tabelaItens.getSelectedRow();
+        if (linhaSelecionada == -1){
+            JOptionPane.showMessageDialog(this, "Selecione o produto que deseja excluir !!!");
+        } else {
+            int op;
+            op = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o produto ?");
+            if (op == 0){
+                double subTotalProduto = 0;
+                subTotalProduto = Double.parseDouble(tabelaItens.getValueAt(linhaSelecionada, 4).toString().replaceAll(",", "."));
+                total -= subTotalProduto;
+                txtTotal.setText(String.valueOf(total).format("%.2f", total));
+                DefaultTableModel itens = (DefaultTableModel) tabelaItens.getModel();
+                itens.removeRow(linhaSelecionada);
+                
+            }
+        }
+    }//GEN-LAST:event_btnExcluirItemActionPerformed
 
     /**
      * @param args the command line arguments

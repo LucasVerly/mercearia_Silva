@@ -49,7 +49,7 @@ public class CadastroProduto extends javax.swing.JFrame {
         
         Produto produto = new Produto();
         produto.setNomeProduto(txtNomeProduto.getText().trim());
-        produto.setPreco(Double.parseDouble(txtPreco.getText().trim()));
+        produto.setPreco(Double.parseDouble(txtPreco.getText().trim().replaceAll(",", ".")));
         produto.setQtd_estoque(Integer.parseInt(txtQuantidade.getText().trim()));
         
         Fornecedores fornecedor = (Fornecedores) cbFornecedor.getSelectedItem();

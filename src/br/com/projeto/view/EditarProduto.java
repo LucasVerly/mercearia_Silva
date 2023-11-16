@@ -37,7 +37,7 @@ public class EditarProduto extends javax.swing.JFrame {
         
         int codigo = Integer.parseInt(txtCodigo.getText());
         String quantidade = txtQuantidade.getText().trim();
-        String preco = txtPreco.getText().trim();
+        String preco = txtPreco.getText().trim().replaceAll(",", ".");
         
         
         
