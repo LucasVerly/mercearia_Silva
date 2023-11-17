@@ -1,0 +1,26 @@
+INSERT INTO tb_funcionarios (nome, rg, cpf, email, senha, cargo, nivel_acesso, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado, ativo, dataNascimento)
+VALUES 
+('João Silva', '1234567', '123.456.789-01', 'joao@example.com', 'senha123', 'Analista', 'Nível 2', '(11) 1234-5678', '(11) 98765-4321', '12345-678', 'Rua A', '123', 'Apto 101', 'Centro', 'São Paulo', 'SP', 'true', '1990/05/15'),
+('Maria Souza', '9876543', '987.654.321-09', 'maria@example.com', 'senha456', 'Gerente', 'Nível 3', '(21) 9876-5432', '(21) 1234-5678', '54321-987', 'Avenida B', '456', 'Sala 202', 'Bairro Novo', 'Rio de Janeiro', 'RJ', 'true', '1985/10/20'),
+('Pedro Oliveira', '4567890', '456.789.012-34', 'pedro@example.com', 'senha789', 'Assistente', 'Nível 1', '(31) 1111-2222', '(31) 3333-4444', '67890-123', 'Travessa C', '789', 'Fundos', 'Centro', 'Belo Horizonte', 'MG', 'true', '1995/12/03'),
+('Ana Santos', '1357924', '135.792.468-00', 'ana@example.com', 'senhaabc', 'Coordenador', 'Nível 2', '(41) 3333-5555', '(41) 9999-8888', '98765-432', 'Rua D', '987', 'Casa 10', 'Vila Feliz', 'Curitiba', 'PR', 'true', '1988/07/25'),
+('Carla Lima', '2468013', '246.801.357-22', 'carla@example.com', 'senhalima', 'Analista', 'Nível 2', '(51) 7777-9999', '(51) 3333-1111', '23456-789', 'Avenida E', '654', 'Bloco 5', 'Jardim Esperança', 'Porto Alegre', 'RS', 'true', '1992/04/18');
+
+
+INSERT INTO tb_clientes (nome, rg, cpf, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado, ativo, dataNascimento)
+VALUES
+('João Silva', '123456789', '123.456.789-00', 'joao@email.com', '(00) 1234-5678', '(00) 98765-4321', '12345-678', 'Rua A', '100', 'Apto 101', 'Centro', 'São Paulo', 'SP', 'true', '01/01/1990'),
+('Maria Santos', '987654321', '987.654.321-00', 'maria@email.com', '(00) 5432-1098', '(00) 24680-1357', '56789-012', 'Avenida B', '200', 'Casa 2', 'Bairro X', 'Rio de Janeiro', 'RJ', 'true', '10/05/1985'),
+('Pedro Oliveira', '654321987', '654.321.987-00', 'pedro@email.com', '(00) 1111-2222', '(00) 3333-4444', '90123-456', 'Rua C', '300', 'Sala 3', 'Bairro Y', 'Porto Alegre', 'RS', 'true', '25/11/1978'),
+('Ana Costa', '789456123', '789.456.123-00', 'ana@email.com', '(00) 7777-8888', '(00) 9999-0000', '34567-890', 'Avenida D', '400', 'Fundos', 'Bairro Z', 'Curitiba', 'PR', 'true', '15/07/1995'),
+('Carlos Pereira', '456123789', '456.123.789-00', 'carlos@email.com', '(00) 4545-7878', '(00) 7878-4545', '67890-123', 'Rua E', '500', 'Apto 5A', 'Centro', 'Brasília', 'DF', 'true', '30/03/1980'),
+('Sandra Ferreira', '147258369', '147.258.369-00', 'sandra@email.com', '(00) 3333-1111', '(00) 2222-4444', '23456-789', 'Avenida F', '600', 'Casa 6', 'Bairro W', 'Salvador', 'BA', 'true', '20/09/1992'),
+('Fernando Souza', '369258147', '369.258.147-00', 'fernando@email.com', '(00) 9999-8888', '(00) 8888-9999', '45678-901', 'Rua G', '700', 'Apto 7B', 'Bairro K', 'Fortaleza', 'CE', 'true', '05/12/1987'),
+('Laura Lima', '258369147', '258.369.147-00', 'laura@email.com', '(00) 6767-9898', '(00) 9898-6767', '56789-012', 'Avenida H', '800', 'Casa 8', 'Bairro J', 'Recife', 'PE', 'true', '18/04/1998'),
+('Mariana Rodrigues', '852369741', '852.369.741-00', 'mariana@email.com', '(00) 2222-3333', '(00) 4444-5555', '12345-678', 'Rua I', '900', 'Apto 9C', 'Centro', 'Manaus', 'AM', 'true', '12/08/1983'),
+('Rafaela Almeida', '963852741', '963.852.741-00', 'rafaela@email.com', '(00) 7878-4545', '(00) 4545-7878', '67890-123', 'Avenida J', '1000', 'Loja 10', 'Bairro L', 'Belém', 'PA', 'true', '25/01/1996');
+
+
+INSERT INTO tb_clientes (nome, rg, cpf, email, telefone, celular, cep, endereco, numero, complemento, bairro, cidade, estado, ativo, dataNascimento)
+VALUES ('Mercearia Silva', '000000000', '000.000.000-00', 'mercearia@email.com', '(00) 0000-0000', '(00) 0000-0000', '00000-000', 'Rua Z', '10', 'Sala 1', 'Bairro A', 'Cidade X', 'XX', 'true', '01/01/1970');
+

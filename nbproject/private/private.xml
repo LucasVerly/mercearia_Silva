@@ -3,16 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroFuncionario.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/ItemVenda.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/DetalheVenda.java</file>
             <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/HistoricoVenda.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/ControleFuncionario.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/PainelVenda.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/Pagamento.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/CadastroProduto.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/MenuPrincipal.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/view/EditarProduto.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/ProdutoDAO.java</file>
-            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/VendaDAO.java</file>
+            <file>file:/D:/Usuarios/Documentos/NetBeansProjects/Mercearia_Silva/src/br/com/projeto/model/dao/ItemVendaDAO.java</file>
         </group>
     </open-files>
 </project-private>
