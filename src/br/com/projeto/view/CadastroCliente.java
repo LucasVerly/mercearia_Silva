@@ -51,7 +51,7 @@ public class CadastroCliente extends javax.swing.JFrame {
             Connection conexao = new Conexao().getConnection();
             ClienteDAO clienteDao = new ClienteDAO(conexao);
             clienteDao.insertCliente(cliente);
-            JOptionPane.showMessageDialog(null, "Funcionário cadastrado com sucesso !!!");
+            JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso !!!");
         } catch (SQLException ex) {
             Logger.getLogger(CadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar !!!" + ex);

@@ -52,7 +52,7 @@ public class EditarFornecedor extends javax.swing.JFrame {
             Connection conexao = new Conexao().getConnection();
             FornecedorDAO fornecedorDao = new FornecedorDAO(conexao);
             fornecedorDao.updateFornecedor(fornecedor);
-            JOptionPane.showMessageDialog(null, "Funcionário editado com sucesso !!!");
+            JOptionPane.showMessageDialog(null, "Fornecedor editado com sucesso !!!");
         } catch (SQLException ex) {
             Logger.getLogger(CadastroFuncionario.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Erro ao editar !!!" + ex);
@@ -131,16 +131,16 @@ public class EditarFornecedor extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Cadastro de Fornecedores");
+        jLabel1.setText("Editar Fornecedore");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(396, 396, 396)
+                .addGap(425, 425, 425)
                 .addComponent(jLabel1)
-                .addContainerGap(392, Short.MAX_VALUE))
+                .addContainerGap(446, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

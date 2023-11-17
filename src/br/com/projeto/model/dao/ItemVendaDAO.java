@@ -6,9 +6,12 @@
 package br.com.projeto.model.dao;
 
 import br.com.projeto.model.ItemVenda;
+import br.com.projeto.model.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -34,6 +37,31 @@ public class ItemVendaDAO {
         statement.setString(4, String.valueOf(item.getSubtotal()));
         
         statement.execute();
+    }
+
+    public ArrayList<ItemVenda> listaItensComprados(int idVenda) throws SQLException {
+        
+        ArrayList <ItemVenda> lista = new ArrayList();
+        
+        String sql = "select i.id, p.descricao, i.qtd, p.preco, i.subtotal from tb_itensvendas as i inner join tb_produtos as p on i.produto_id = p.id where i.venda_id = ?";
+        
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, idVenda);
+        
+        ResultSet result = statement.executeQuery();
+        
+        while (result.next()){
+            ItemVenda item = new ItemVenda();
+            Produto p = new Produto();
+            p.setNomeProduto(result.getString("p.descricao"));
+            p.setPreco(Double.parseDouble(result.getString("p.preco")));
+            item.setProduto(p);
+            item.setId(result.getInt("i.id"));
+            item.setQtd(Integer.parseInt(result.getString("i.qtd")));
+            item.setSubtotal(Double.parseDouble(result.getString("i.subtotal")));
+            lista.add(item);
+        }
+        return lista;
     }
     
 }

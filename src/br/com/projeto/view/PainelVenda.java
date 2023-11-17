@@ -406,6 +406,7 @@ public class PainelVenda extends javax.swing.JFrame {
         txtNome.setEnabled(false);
         txtNomeProduto.setEnabled(false);
         txtPreco.setEnabled(false);
+        txtData.setEnabled(false);
         
         Date agora = new Date();
 
@@ -439,6 +440,9 @@ public class PainelVenda extends javax.swing.JFrame {
             subTotal = quant * preco;
             total += subTotal;
             
+            DecimalFormat formato = new DecimalFormat("#.##");
+            String sub = String.valueOf(subTotal).format("%.2f", subTotal);
+            
             txtTotal.setText(String.valueOf(total).format("%.2f", total));
                     
             carrinho = (DefaultTableModel) tabelaItens.getModel();
@@ -448,7 +452,7 @@ public class PainelVenda extends javax.swing.JFrame {
                 txtNomeProduto.getText(),
                 txtQuantidade.getText(),
                 txtPreco.getText(),
-                subTotal
+                sub
             });
             txtCodigo.setText("");
             txtNomeProduto.setText("");

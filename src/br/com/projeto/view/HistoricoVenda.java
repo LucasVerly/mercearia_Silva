@@ -5,7 +5,9 @@
  */
 package br.com.projeto.view;
 
+import br.com.projeto.model.ItemVenda;
 import br.com.projeto.model.Venda;
+import br.com.projeto.model.dao.ItemVendaDAO;
 import br.com.projeto.model.dao.VendaDAO;
 import br.com.projeto.model.dao.conexao.Conexao;
 import java.sql.Connection;
@@ -120,6 +122,11 @@ public class HistoricoVenda extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelaHistorico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaHistoricoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaHistorico);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -185,7 +192,7 @@ public class HistoricoVenda extends javax.swing.JFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         // TODO add your handling code here:
-        if (txtDataInicial.getText().trim().isEmpty() && txtDataFinal.getText().trim().isEmpty()){
+        if (txtDataInicial.getText().isEmpty() && txtDataFinal.getText().isEmpty()){
             JOptionPane.showMessageDialog(this, "Preencha a data inicial e final");
         } else {
             String dataInicial = txtDataInicial.getText().trim();
@@ -242,6 +249,45 @@ public class HistoricoVenda extends javax.swing.JFrame {
                 Logger.getLogger(HistoricoVenda.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_formWindowActivated
+
+    private void tabelaHistoricoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaHistoricoMouseClicked
+        // TODO add your handling code here:
+        DetalheVenda detalhe = new DetalheVenda();
+        detalhe.getTxtCliente().setText(tabelaHistorico.getValueAt(tabelaHistorico.getSelectedRow(), 2).toString());
+        detalhe.getTxtTotal().setText(tabelaHistorico.getValueAt(tabelaHistorico.getSelectedRow(), 3).toString());
+        detalhe.getTxtData().setText(tabelaHistorico.getValueAt(tabelaHistorico.getSelectedRow(), 1).toString());
+        
+        int idVenda = Integer.parseInt(tabelaHistorico.getValueAt(tabelaHistorico.getSelectedRow(), 0).toString());
+        
+        ItemVenda item = new ItemVenda();
+        try {
+            Connection conexao = new Conexao().getConnection();
+            ItemVendaDAO itemDao = new ItemVendaDAO(conexao);
+            
+            ArrayList<ItemVenda> listaItens = itemDao.listaItensComprados(idVenda);
+            
+            DefaultTableModel dados = (DefaultTableModel) detalhe.getTabelaDetalhe().getModel();
+            
+            dados.setNumRows(0);
+            
+            for ( ItemVenda i : listaItens ){
+                dados.addRow(new Object[]{
+                    i.getId(),
+                    i.getProduto().getNomeProduto(),
+                    i.getQtd(),
+                    i.getProduto().getPreco(),
+                    i.getSubtotal()
+                });
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(HistoricoVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        detalhe.setVisible(true);
+        this.dispose();
+       
+    }//GEN-LAST:event_tabelaHistoricoMouseClicked
 
     /**
      * @param args the command line arguments
